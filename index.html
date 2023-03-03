@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section>
+      <h1 class="game--title">Tic Tac Toe</h1>
+      <div class="game--container">
+        <div id="0" onclick="clicked(0)" class="cell"></div>
+        <div id="1" onclick="clicked(1)" class="cell"></div>
+        <div id="2" onclick="clicked(2)" class="cell"></div>
+        <div id="3" onclick="clicked(3)" class="cell"></div>
+        <div id="4" onclick="clicked(4)" class="cell"></div>
+        <div id="5" onclick="clicked(5)" class="cell"></div>
+        <div id="6" onclick="clicked(6)" class="cell"></div>
+        <div id="7" onclick="clicked(7)" class="cell"></div>
+        <div id="8" onclick="clicked(8)" class="cell"></div>
+      </div>
+      <h2 class="game--status"></h2>
+      <button onclick="restartGame()" class="game--restart">
+        Restart Game
+      </button>
+    </section>
+  </body>
+  <script>
+    let gameActiv = true;
+    for (var i = 0; i <= 8; i++) {
+      document.getElementById(i).innerHTML = "";
+    }
+
+    let playerTurn = "X";
+
+    function changePlayerTurn() {
+      playerTurn == "X" ? (playerTurn = "O") : (playerTurn = "X");
+    }
+
+    function whosTurn() {
+      document.getElementsByClassName("game--status")[0].innerHTML =
+        playerTurn + "'s Turn";
+    }
+    function clicked(index) {
+      if (gameActiv) {
+        document.getElementById(index).innerHTML = playerTurn;
+        changePlayerTurn();
+        let board = [
+          [
+            document.getElementById("0").innerHTML,
+            document.getElementById("1").innerHTML,
+            document.getElementById("2").innerHTML,
+          ],
+          [
+            document.getElementById("3").innerHTML,
+            document.getElementById("4").innerHTML,
+            document.getElementById("5").innerHTML,
+          ],
+          [
+            document.getElementById("6").innerHTML,
+            document.getElementById("7").innerHTML,
+            document.getElementById("8").innerHTML,
+          ],
+        ];
+        let winner = isSolved(board);
+        whosTurn();
+        if (winner == "X" || winner == "O") {
+          document.getElementsByClassName("game--status")[0].innerHTML =
+            winner + " is the winner";
+          gameActiv = false;
+        }
+        if (!board.flat().includes("") && winner == 0) {
+          document.getElementsByClassName("game--status")[0].innerHTML = "Draw";
+          gameActiv = false;
+        }
+      }
+    }
+    function restartGame() {
+      for (var i = 0; i <= 8; i++) {
+        document.getElementById(i).innerHTML = "";
+      }
+      document.getElementsByClassName("game--status")[0].innerHTML = "";
+      gameActiv = true;
+      playerTurn = "X";
+    }
+
+    function isSolved(board) {
+      var s1 = [board[0][0], board[0][1], board[0][2]];
+      var s2 = [board[1][0], board[1][1], board[1][2]];
+      var s3 = [board[2][0], board[2][1], board[2][2]];
+      var a1 = [board[0][0], board[1][0], board[2][0]];
+      var a2 = [board[0][1], board[1][1], board[2][1]];
+      var a3 = [board[0][2], board[1][2], board[2][2]];
+      var c1 = [board[0][0], board[1][1], board[2][2]];
+      var c2 = [board[0][2], board[1][1], board[2][0]];
+
+      var arr = [s1, s2, s3, a1, a2, a3, c1, c2];
+      for (var b of arr) {
+        var temp = b;
+        if (
+          b[0] == b[1] &&
+          b[0] == b[2] &&
+          b[0] != "" &&
+          b[1] != "" &&
+          b[2] != ""
+        ) {
+          return b[0];
+        }
+      }
+      for (var b of arr) {
+        var temp = b;
+        if (
+          (b[0] == b[1] && b[2] == "") ||
+          (b[2] == b[1] && b[0] == "") ||
+          (b[0] == b[2] && b[1] == "")
+        ) {
+          return -1;
+        }
+      }
+      return 0;
+    }
+  </script>
+</html>
