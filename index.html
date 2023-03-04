@@ -48,6 +48,9 @@
     }
     function clicked(index) {
       if (gameActiv) {
+        if(document.getElementById(index).innerHTML != ""){
+          return
+        }
         document.getElementById(index).innerHTML = playerTurn;
         changePlayerTurn();
         let board = [
